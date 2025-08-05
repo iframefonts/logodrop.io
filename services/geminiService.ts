@@ -1,11 +1,14 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { LogoStyle } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable is not set.");
+const apiKey = process.env.API_KEY;
+
+if (!apiKey) {
+  throw new Error("Gemini API key is not configured. Please set API_KEY in your environment variables.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey });
 
 export async function generateLogo(brandName: string, logoPrompt: string, style: LogoStyle): Promise<{imageUrl: string}> {
   const imageGenerationPrompt = `A professional logo for a brand named '${brandName}'.

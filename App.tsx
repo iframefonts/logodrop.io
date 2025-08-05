@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Session, PostgrestSingleResponse } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabaseClient';
 import AuthComponent from './components/Auth';
 import { LogoGenerator } from './components/LogoGenerator';
@@ -12,7 +13,7 @@ export default function App() {
 
   const fetchCredits = async (currentSession: Session) => {
     try {
-      const { data, error }: PostgrestSingleResponse<{ credits: number }> = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('credits')
         .eq('id', currentSession.user.id)
@@ -21,15 +22,15 @@ export default function App() {
       if (error) {
         console.error("Error fetching profile:", error.message);
       }
-      if (data) {
-        setCredits(data.credits);
-      }
+      setCredits(data?.credits ?? null);
     } catch (e) {
       console.error("An unexpected error occurred fetching profile:", e);
+      setCredits(null);
     }
   };
   
   useEffect(() => {
+    setLoading(true);
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
