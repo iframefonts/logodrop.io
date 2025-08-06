@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { CreditCardIcon } from './Icons';
-import { STRIPE_PRODUCTS } from '../stripe-config';
+import { STRIPE_PRODUCTS } from '../src/stripe-config';
 
 export const BuyCredits: React.FC = () => {
     const [loading, setLoading] = useState(false);
