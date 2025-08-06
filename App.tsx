@@ -5,11 +5,13 @@ import { supabase } from './lib/supabaseClient';
 import AuthComponent from './components/Auth';
 import { LogoGenerator } from './components/LogoGenerator';
 import Header from './components/Header';
+import SuccessPage from './components/SuccessPage';
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const fetchCredits = async (currentSession: Session) => {
     try {
@@ -45,6 +47,7 @@ export default function App() {
     
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('checkout_status') === 'success') {
+        setShowSuccess(true);
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
                 fetchCredits(session);
@@ -89,6 +92,10 @@ export default function App() {
 
   if (loading) {
     return null;
+  }
+
+  if (showSuccess) {
+    return <SuccessPage onContinue={() => setShowSuccess(false)} />;
   }
 
   if (!session) {

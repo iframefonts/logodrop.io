@@ -1,17 +1,39 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { CreditCardIcon } from './Icons';
+import { STRIPE_PRODUCTS } from '../stripe-config';
 
 export const BuyCredits: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const creditsProduct = STRIPE_PRODUCTS.find(p => p.name === '50 Logo Credits');
+
     const handleCheckout = async () => {
+        if (!creditsProduct) {
+            setError('Product not found');
+            return;
+        }
+
         setLoading(true);
         setError(null);
         try {
-            // This invokes the 'create-checkout-session' Edge Function
-            const { data, error } = await supabase.functions.invoke('create-checkout-session');
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                throw new Error('Not authenticated');
+            }
+
+            const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+                body: {
+                    price_id: creditsProduct.priceId,
+                    mode: creditsProduct.mode,
+                    success_url: `${window.location.origin}?checkout_status=success`,
+                    cancel_url: window.location.origin
+                },
+                headers: {
+                    Authorization: `Bearer ${session.access_token}`
+                }
+            });
             
             if (error) throw error;
 
@@ -41,7 +63,7 @@ export const BuyCredits: React.FC = () => {
                 ) : (
                     <>
                         <CreditCardIcon className="h-5 w-5" />
-                        Buy 50 Credits for $5
+                        Buy 50 Credits for €{creditsProduct?.price || 5}
                     </>
                 )}
             </button>
