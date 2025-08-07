@@ -36,7 +36,6 @@ const AuthComponent: React.FC = () => {
       }
     } catch (error: any) {
       setMessage({ type: 'error', text: error.message });
-    } finally {
       setLoading(false);
     }
   };
