@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { LogoIcon } from './Icons';
 
 const AuthComponent: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -114,7 +113,6 @@ const AuthComponent: React.FC = () => {
             {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
           </button>
         </div>
-      </div>
       </div>
     </div>
   );
