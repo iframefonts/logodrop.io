@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({ session, credits }) => {
     <header className="py-4 px-4 md:px-8 border-b border-gray-800">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
-            <LogoIcon className="h-8 w-8 text-indigo-400" />
             <h1 className="text-2xl md:text-3xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400">
             logodrop.io
             </h1>
