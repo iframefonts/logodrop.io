@@ -43,6 +43,8 @@ const AuthComponent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400">
             Welcome to logodrop.io
           </h1>
@@ -113,6 +115,7 @@ const AuthComponent: React.FC = () => {
             {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
